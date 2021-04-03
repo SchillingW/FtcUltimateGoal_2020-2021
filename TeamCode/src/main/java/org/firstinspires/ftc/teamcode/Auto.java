@@ -4,8 +4,6 @@ import java.util.List;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
-// hello Caylee this is a github test!!!
-
 // base autonomous OpMode
 public abstract class Auto extends LinearOpMode {
 
