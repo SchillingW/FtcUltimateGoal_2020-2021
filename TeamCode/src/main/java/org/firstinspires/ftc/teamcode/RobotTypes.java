@@ -37,7 +37,7 @@ public class RobotTypes {
             new double[]{0.2, 0.5, 1, 0.51},
             false,
             true,
-            false,
+            true,
             false);
     }
 }

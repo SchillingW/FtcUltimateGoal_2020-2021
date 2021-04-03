@@ -19,7 +19,7 @@ public abstract class Auto extends LinearOpMode {
     public double trainCircumference = trainDiameter * Math.PI;
 
     // declare speeds
-    public double driveSpeed = 1;
+    public double driveSpeed = 0.5;
     public double turnSpeed = 1;
 
     // declare motor errors
@@ -30,7 +30,7 @@ public abstract class Auto extends LinearOpMode {
     public double inchPerFoot = 12;
 
     // declare field movements
-    public double initialMoveX = inchPerFoot;
+    public double initialMoveX = 2 * inchPerFoot;
     public double startToShootX = 1.5 * inchPerFoot;
     public double startToShootY = 5 * inchPerFoot;
     public double[] startToWobbleX = {3 * inchPerFoot, inchPerFoot, 3 * inchPerFoot};
