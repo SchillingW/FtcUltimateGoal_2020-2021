@@ -54,7 +54,7 @@ public class Robot {
     public String gyroName = "gyro";
     public String fileName = "robotStateSave.txt";
 
-    // declare motor encoder state;
+    // declare motor encoder state
     public boolean[] motorsOn = new boolean[allMotors.length];
 
     // declare ticks per rotation
@@ -74,7 +74,7 @@ public class Robot {
     public double hookRotations = 9;
     public double hookSpeed = 0.4;
     public double shooterRotations = 600;
-    public double armSpeed = 0.5;
+    public double armSpeed = 0.3;
     public double armRotations = 0.7;
     public double elevSpeedUp = 1;
     public double elevSpeedDown = 0.2;

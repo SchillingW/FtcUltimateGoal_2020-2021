@@ -31,11 +31,11 @@ public class RobotTypes {
 
     public static Robot newRob3(HardwareMap map, Telemetry tele) {
         return new Robot(map, tele,
-            new double[]{Robot.tprHdHex20 * (30.0 / 36.0), Robot.tprHdHex20, Robot.tprHdHex20 * (30.0 / 36.0), Robot.tprHdHex20,
-                Robot.tprHdHex, 0, Robot.tprHdHex, 0, Robot.tprHdHex},
+            new double[]{Robot.tprHdHex20, Robot.tprHdHex20, Robot.tprHdHex20, Robot.tprHdHex20,
+                Robot.tprHdHex, 0, Robot.tprHdHex, Robot.tprHdHex60, Robot.tprHdHex},
             new boolean[]{false, false, true, true, false},
             new double[]{0.2, 0.5, 1, 0.51},
-            false,
+            true,
             true,
             true,
             false);
