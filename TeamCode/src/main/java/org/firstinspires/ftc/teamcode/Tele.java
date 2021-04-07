@@ -8,7 +8,10 @@ public abstract class Tele extends OpMode {
 
     // declare robot object
     public Robot robot;
+
+    // variable data
     public float startRadians = -90;
+    public float slowSpeed = 0.5f;
 
     // last frame data
     public boolean lastAButton1 = true;
@@ -32,7 +35,6 @@ public abstract class Tele extends OpMode {
     public boolean gyroCompensate = true;
     public boolean driveOn = true;
     public boolean collectorOn = true;
-    public boolean reverseOn = false;
     public boolean elevUp = false;
     public boolean objectDetectionOn = false;
 
@@ -85,7 +87,6 @@ public abstract class Tele extends OpMode {
         boolean dPadDown2 = gamepad2.dpad_down;
         if (aButton1 && !lastAButton1) {gyroCompensate = !gyroCompensate;}
         if (bButton1 && !lastBButton1) {robot.startRadians = robot.gyroAngle() + robot.startRadians + startRadians;}
-        if (yButton1 && !lastYButton1) {reverseOn = !reverseOn;}
         if (xButton1 && !lastXButton1) {driveOn = !driveOn;}
         /*
         if (aButton2 && !lastAButton2) {robot.encoderMoveStart(robot.ringSpeeds[0], robot.ringRotations[0], robot.ringSystem, null);}
@@ -148,7 +149,6 @@ public abstract class Tele extends OpMode {
         telemetry.addData("GyroCompensate", gyroCompensate);
         telemetry.addData("DriveOn", driveOn);
         telemetry.addData("CollectorOn", collectorOn);
-        telemetry.addData("ReverseOn", reverseOn);
         telemetry.addData("ElevUp", elevUp);
         telemetry.addData("StartRadians", formatDouble(robot.startRadians));
         telemetry.addData("PadX", formatDouble(padX));
@@ -169,9 +169,9 @@ public abstract class Tele extends OpMode {
         if (robot.servoHook != null) {robot.servoHook.setPower(collectorOn ? 0 : 0.5);}
         if (robot.arm != null) {robot.arm.setPower(gamepad2.left_stick_y * robot.armSpeed);}
         if (robot.servoArm != null && gamepad2.right_stick_y != 0) {robot.servoArm.setPosition(gamepad2.right_stick_y > 0 ? 1 : 0);}
-        int reverseFactor = reverseOn ? -1 : 1;
-        if (gyroCompensate) {setDrivePower(getXFromRadians(outputRadians, hypotenuse) * reverseFactor, getYFromRadians(outputRadians, hypotenuse) * reverseFactor, rotational);
-        } else {setDrivePower(inputX * reverseFactor, inputY * reverseFactor, rotational);}
+        float speedFactor = yButton1 ? slowSpeed : 1;
+        if (gyroCompensate) {setDrivePower(getXFromRadians(outputRadians, hypotenuse) * speedFactor, getYFromRadians(outputRadians, hypotenuse) * speedFactor, rotational * speedFactor);
+        } else {setDrivePower(inputX * speedFactor, inputY * speedFactor, rotational * speedFactor);}
 
         // finish loop
         lastAButton1 = aButton1;
