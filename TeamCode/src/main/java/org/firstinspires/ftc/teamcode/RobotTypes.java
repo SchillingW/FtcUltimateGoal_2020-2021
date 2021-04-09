@@ -34,10 +34,10 @@ public class RobotTypes {
             new double[]{Robot.tprHdHex20, Robot.tprHdHex20, Robot.tprHdHex20, Robot.tprHdHex20,
                 Robot.tprHdHex, 0, Robot.tprHdHex, Robot.tprHdHex60, Robot.tprHdHex},
             new boolean[]{false, false, true, true, false},
-            new double[]{0.2, 0.5, 1, 0.51},
+            new double[]{1, 1, 1, 1},
             true,
             true,
             true,
-            false);
+            true);
     }
 }
