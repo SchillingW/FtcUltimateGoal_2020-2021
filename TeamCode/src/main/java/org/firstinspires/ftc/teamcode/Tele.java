@@ -11,7 +11,7 @@ public abstract class Tele extends OpMode {
 
     // variable data
     public float startRadians = -90;
-    public float slowSpeed = 0.5f;
+    public float slowSpeed = 0.2f;
 
     // last frame data
     public boolean lastAButton1 = true;
@@ -26,6 +26,8 @@ public abstract class Tele extends OpMode {
     public boolean lastLBumper1 = true;
     public boolean lastRBumper2 = true;
     public boolean lastLBumper2 = true;
+    public boolean lastRTrigger1 = true;
+    public boolean lastLTrigger1 = true;
     public boolean lastRTrigger2 = true;
     public boolean lastLTrigger2 = true;
     public boolean lastDPadUp2 = true;
@@ -81,6 +83,8 @@ public abstract class Tele extends OpMode {
         boolean lBumper1 = gamepad1.left_bumper;
         boolean rBumper2 = gamepad2.right_bumper;
         boolean lBumper2 = gamepad2.left_bumper;
+        boolean rTrigger1 = gamepad1.right_trigger > 0;
+        boolean lTrigger1 = gamepad1.left_trigger > 0;
         boolean rTrigger2 = gamepad2.right_trigger > 0;
         boolean lTrigger2 = gamepad2.left_trigger > 0;
         boolean dPadUp2 = gamepad2.dpad_up;
@@ -169,7 +173,7 @@ public abstract class Tele extends OpMode {
         if (robot.servoHook != null) {robot.servoHook.setPower(collectorOn ? 0 : 0.5);}
         if (robot.arm != null) {robot.arm.setPower(gamepad2.left_stick_y * robot.armSpeed);}
         if (robot.servoArm != null && gamepad2.right_stick_y != 0) {robot.servoArm.setPosition(gamepad2.right_stick_y > 0 ? 1 : 0);}
-        float speedFactor = yButton1 ? slowSpeed : 1;
+        float speedFactor = rTrigger1 ? slowSpeed : 1;
         if (gyroCompensate) {setDrivePower(getXFromRadians(outputRadians, hypotenuse) * speedFactor, getYFromRadians(outputRadians, hypotenuse) * speedFactor, rotational * speedFactor);
         } else {setDrivePower(inputX * speedFactor, inputY * speedFactor, rotational * speedFactor);}
 
@@ -186,6 +190,8 @@ public abstract class Tele extends OpMode {
         lastLBumper1 = lBumper1;
         lastRBumper2 = rBumper2;
         lastLBumper2 = lBumper2;
+        lastRTrigger1 = rTrigger1;
+        lastLTrigger1 = lTrigger1;
         lastRTrigger2 = rTrigger2;
         lastLTrigger2 = lTrigger2;
         lastDPadUp2 = dPadUp2;
