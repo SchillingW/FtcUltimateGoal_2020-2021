@@ -30,12 +30,12 @@ public abstract class Auto extends LinearOpMode {
     public double inchPerFoot = 12;
 
     // declare field movements
-    public double initialMoveX = 2 * inchPerFoot;
-    public double startToShootX = 1.5 * inchPerFoot;
+    public double initialMoveX = 3 * inchPerFoot;
+    public double startToShootX = 2 * inchPerFoot;
     public double startToShootY = 5 * inchPerFoot;
-    public double[] startToWobbleX = {3 * inchPerFoot, inchPerFoot, 3 * inchPerFoot};
+    public double[] startToWobbleX = {4 * inchPerFoot, 2 * inchPerFoot, 4 * inchPerFoot};
     public double[] startToWobbleY = {9 * inchPerFoot, 7 * inchPerFoot, 5 * inchPerFoot};
-    public double startToParkX = 2 * inchPerFoot;
+    public double startToParkX = 3 * inchPerFoot;
     public double startToParkY = 6 * inchPerFoot;
 
     public abstract Robot getRobot();
@@ -93,28 +93,28 @@ public abstract class Auto extends LinearOpMode {
     // drive horizontally
     public void encoderDriveHorizontal(double distance) {
         double[] driveSpeeds = new double[robot.driveSystem.length];
-        for (int i = 0; i < driveSpeeds.length; i++) {driveSpeeds[i] = driveSpeed;}
+        for (int i = 0; i < driveSpeeds.length; i++) {driveSpeeds[i] = driveSpeed * robot.driveSpeeds[i];}
         robot.encoderMoveLinear(driveSpeeds, robot.driverSpeeds(distance / wheelCircumference * driveError, 0, 0), robot.driveSystem, this);
     }
 
     // drive vertically
     public void encoderDriveVertical(double distance) {
         double[] driveSpeeds = new double[robot.driveSystem.length];
-        for (int i = 0; i < driveSpeeds.length; i++) {driveSpeeds[i] = driveSpeed;}
+        for (int i = 0; i < driveSpeeds.length; i++) {driveSpeeds[i] = driveSpeed * robot.driveSpeeds[i];}
         robot.encoderMoveLinear(driveSpeeds, robot.driverSpeeds(0, distance / wheelCircumference * driveError, 0), robot.driveSystem, this);
     }
 
     // drive
     public void encoderDrive(double x, double y) {
         double[] driveSpeeds = new double[robot.driveSystem.length];
-        for (int i = 0; i < driveSpeeds.length; i++) {driveSpeeds[i] = driveSpeed;}
+        for (int i = 0; i < driveSpeeds.length; i++) {driveSpeeds[i] = driveSpeed * robot.driveSpeeds[i];}
         robot.encoderMoveLinear(driveSpeeds, robot.driverSpeeds(x / wheelCircumference * driveError, y / wheelCircumference * driveError, 0), robot.driveSystem, this);
     }
 
     // turn
     public void encoderTurn(double rotations) {
         double[] driveSpeeds = new double[robot.driveSystem.length];
-        for (int i = 0; i < driveSpeeds.length; i++) {driveSpeeds[i] = turnSpeed;}
+        for (int i = 0; i < driveSpeeds.length; i++) {driveSpeeds[i] = turnSpeed * robot.driveSpeeds[i];}
         robot.encoderMoveLinear(driveSpeeds, robot.driverSpeeds(0, 0, rotations / wheelCircumference * trainCircumference * turnError), robot.driveSystem, this);
     }
 
@@ -134,7 +134,7 @@ public abstract class Auto extends LinearOpMode {
     // lower arm
     public void encoderLowerArm() {
         robot.encoderMoveLinear(new double[]{robot.armSpeed}, new double[]{-robot.armRotations}, new int[]{7}, this);
-        if (robot.servoArm != null) {robot.servoArm.setPosition(1);}
+        if (robot.servoArm != null) {robot.servoArm.setPosition(0);}
         robot.encoderMoveLinear(new double[]{robot.armSpeed}, new double[]{robot.armRotations / 2}, new int[]{7}, this);
     }
 

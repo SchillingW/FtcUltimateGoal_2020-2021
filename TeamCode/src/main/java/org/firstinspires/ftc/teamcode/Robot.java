@@ -75,7 +75,7 @@ public class Robot {
     public double hookSpeed = 0.4;
     public double shooterRotations = 600;
     public double armSpeed = 0.3;
-    public double armRotations = 0.7;
+    public double armRotations = 0.25;
     public double elevSpeedUp = 1;
     public double elevSpeedDown = 0.2;
     public double elevSpeedSide = 0.5;
