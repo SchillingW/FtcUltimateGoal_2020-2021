@@ -31,11 +31,11 @@ public abstract class Auto extends LinearOpMode {
 
     // declare field movements
     public double initialMoveX = 3 * inchPerFoot;
-    public double startToShootX = 2 * inchPerFoot;
-    public double startToShootY = 5 * inchPerFoot;
-    public double[] startToWobbleX = {4 * inchPerFoot, 2 * inchPerFoot, 4 * inchPerFoot};
-    public double[] startToWobbleY = {9 * inchPerFoot, 7 * inchPerFoot, 5 * inchPerFoot};
-    public double startToParkX = 3 * inchPerFoot;
+    public double startToShootX = inchPerFoot;
+    public double startToShootY = 5.2 * inchPerFoot;
+    public double[] startToWobbleX = {4.5 * inchPerFoot, 2 * inchPerFoot, 4 * inchPerFoot};
+    public double[] startToWobbleY = {9 * inchPerFoot, 6.5 * inchPerFoot, 4.5 * inchPerFoot};
+    public double startToParkX = 2 * inchPerFoot;
     public double startToParkY = 6 * inchPerFoot;
 
     public abstract Robot getRobot();
@@ -61,6 +61,9 @@ public abstract class Auto extends LinearOpMode {
         telemetry.addData("Start", "Auto");
         telemetry.update();
 
+        // clamp wobble
+        robot.flicker.setPosition(1);
+
         // aim for high goal
         encoderDriveHorizontal(-initialMoveX);
         encoderDriveVertical(startToShootY);
@@ -74,11 +77,12 @@ public abstract class Auto extends LinearOpMode {
         //if (robot.collector != null) {robot.collector.setPower(0);}
 
         // drop wobble goal
-        encoderDrive(startToWobbleX[ringCount] - startToShootX, startToWobbleY[ringCount] - startToShootY);
+        encoderDriveVertical(startToWobbleY[ringCount] - startToShootY);
+        encoderDriveHorizontal(startToWobbleX[ringCount] - startToShootX);
         encoderLowerArm();
 
         // park
-        if (startToParkY > startToWobbleY[ringCount]) {encoderDriveHorizontal(startToParkX - startToWobbleX[ringCount]);}
+        encoderDriveHorizontal(startToParkX - startToWobbleX[ringCount]);
         encoderDriveVertical(startToParkY - startToWobbleY[ringCount]);
 
         // end OpMode

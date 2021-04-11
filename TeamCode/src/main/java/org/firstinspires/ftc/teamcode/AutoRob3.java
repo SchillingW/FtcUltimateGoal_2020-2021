@@ -6,8 +6,9 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 @Autonomous(name="AutonomousRob3", group="UltimateGoal")
 public class AutoRob3 extends Auto {
 
-    public double shooterRevTime = 1;
-    public double flickerMoveTime = 0.5;
+    public double shooterRevTime = 2;
+    public double flickerMoveTimeShoot = 1;
+    public double flickerMoveTimeRetreat = 2;
 
     @Override
     public Robot getRobot() {
@@ -19,13 +20,14 @@ public class AutoRob3 extends Auto {
         //encoderShoot(2);
         //encoderShoot(2);
         //encoderShoot(2);
+        robot.flicker.setPosition(1);
         robot.shooter.setPower(robot.ringSpeeds[3][1]);
         sleep((long)(shooterRevTime * 1000));
         for (int i = 0; i < 3; i++) {
             robot.flicker.setPosition(0);
-            sleep((long)(flickerMoveTime * 1000));
+            sleep((long)(flickerMoveTimeShoot * 1000));
             robot.flicker.setPosition(1);
-            sleep((long)(flickerMoveTime * 1000));
+            sleep((long)(flickerMoveTimeRetreat * 1000));
         }
         robot.shooter.setPower(0);
     }

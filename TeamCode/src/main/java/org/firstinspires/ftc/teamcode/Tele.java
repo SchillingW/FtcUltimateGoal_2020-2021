@@ -92,16 +92,18 @@ public abstract class Tele extends OpMode {
         if (aButton1 && !lastAButton1) {gyroCompensate = !gyroCompensate;}
         if (bButton1 && !lastBButton1) {robot.startRadians = robot.gyroAngle() + robot.startRadians + startRadians;}
         if (xButton1 && !lastXButton1) {driveOn = !driveOn;}
-        /*
+
         if (aButton2 && !lastAButton2) {robot.encoderMoveStart(robot.ringSpeeds[0], robot.ringRotations[0], robot.ringSystem, null);}
         if (bButton2 && !lastBButton2) {robot.encoderMoveStart(robot.ringSpeeds[1], robot.ringRotations[1], robot.ringSystem, null);}
         if (yButton2 && !lastYButton2) {robot.encoderMoveStart(robot.ringSpeeds[2], robot.ringRotations[2], robot.ringSystem, null);}
         if (xButton2 && !lastXButton2) {robot.encoderMoveStart(robot.ringSpeeds[3], robot.ringRotations[3], robot.ringSystem, null);}
         if (robot.flicker != null) {robot.flicker.setPosition(aButton2 || bButton2 || yButton2 || xButton2 ? 0 : 1);}
-        */
+
+        /*
         if (robot.elev != null) {robot.elev.setPower(aButton2 || bButton2 || yButton2 || xButton2 ? robot.elevSpeedUp : (dPadDown2 ? -robot.elevSpeedDown : 0));}
         if (robot.shooter != null) {robot.shooter.setPower(aButton2 || bButton2 || yButton2 || xButton2 ? robot.ringSpeeds[xButton2 ? 3 : (yButton2 ? 2 : (bButton2 ? 1 : 0))][1] : 0);}
         if (robot.flicker != null) {robot.flicker.setPosition(rTrigger2 ? 0 : 1);}
+        */
         if (rBumper2 && !lastRBumper2) {collectorOn = !collectorOn;}
         if (robot.collectPressure != null) {
             if (lTrigger2) {robot.collectPressure.setPosition(1);
