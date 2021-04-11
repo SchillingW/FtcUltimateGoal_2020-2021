@@ -30,8 +30,11 @@ public class RobotTypes {
     }
 
     public static Robot newRob3(HardwareMap map, Telemetry tele) {
+        double frontDriveGear = 30.0 / 36.0;
+        double frontDriveLerp = 0.5;
+        double frontDriveSpeed = lerp(frontDriveGear, 1, frontDriveLerp);
         return new Robot(map, tele,
-            new double[]{Robot.tprHdHex20 * (30f / 36f), Robot.tprHdHex20, Robot.tprHdHex20 * (30f / 36f), Robot.tprHdHex20,
+            new double[]{Robot.tprHdHex20 * frontDriveSpeed, Robot.tprHdHex20, Robot.tprHdHex20 * frontDriveSpeed, Robot.tprHdHex20,
                 Robot.tprHdHex, 0, Robot.tprHdHex, Robot.tprHdHex60, 0},
             new boolean[]{false, false, true, true, false},
             new double[]{0.3, 0.7, 0.7825, 0.73},
@@ -39,5 +42,9 @@ public class RobotTypes {
             true,
             true,
             true);
+    }
+
+    public static double lerp(double start, double end, double interpolation) {
+        return start + (end - start) * interpolation;
     }
 }
