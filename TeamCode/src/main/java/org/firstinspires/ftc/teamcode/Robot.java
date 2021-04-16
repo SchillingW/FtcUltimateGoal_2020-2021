@@ -76,9 +76,8 @@ public class Robot {
     public double shooterRotations = 600;
     public double armSpeed = 0.3;
     public double armRotations = 0.25;
-    public double elevSpeedUp = 1;
-    public double elevSpeedDown = 0.2;
-    public double elevSpeedSide = 0.5;
+    public double elevSpeedUp = 0.2;
+    public double elevSpeedDown = 0.1;
     public double[][] ringSpeeds;
     public double[][] ringRotations;
 
@@ -97,7 +96,7 @@ public class Robot {
     public double startRadians = 0;
 
     // initialize robot
-    public Robot(HardwareMap map, Telemetry tele, double[] inputTPR, boolean[] hasServos, double[] shooterSpeeds, boolean drivePolarity, boolean collectPolarity, boolean shootPolarity, boolean armPolarity) {
+    public Robot(HardwareMap map, Telemetry tele, double[] inputTPR, boolean[] breaks, boolean[] hasServos, double[] shooterSpeeds, boolean drivePolarity, boolean collectPolarity, boolean shootPolarity, boolean armPolarity) {
 
         // set ticks per rotation as well as data for included motors
         ticksPerRotation = inputTPR;
@@ -142,6 +141,7 @@ public class Robot {
         tele.update();
         for (int i = 0; i < allMotors.length; i++) {if (allMotors[i] != null) {allMotors[i].setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);}}
         for (int i = 0; i < allMotors.length; i++) {if (allMotors[i] != null) {allMotors[i].setMode(DcMotor.RunMode.RUN_USING_ENCODERS);}}
+        for (int i = 0; i < allMotors.length; i++) {if (allMotors[i] != null && breaks[i]) {allMotors[i].setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);}}
 
         // initialize servos
         tele.addData("Init", "Servos");

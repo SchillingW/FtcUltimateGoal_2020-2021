@@ -2,6 +2,8 @@ package org.firstinspires.ftc.teamcode;
 
 import java.util.List;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
 // base autonomous OpMode
@@ -99,6 +101,7 @@ public abstract class Auto extends LinearOpMode {
         double[] driveSpeeds = new double[robot.driveSystem.length];
         for (int i = 0; i < driveSpeeds.length; i++) {driveSpeeds[i] = driveSpeed * robot.driveSpeeds[i];}
         robot.encoderMoveLinear(driveSpeeds, robot.driverSpeeds(distance / wheelCircumference * driveError, 0, 0), robot.driveSystem, this);
+        encoderTurnGyro();
     }
 
     // drive vertically
@@ -106,6 +109,7 @@ public abstract class Auto extends LinearOpMode {
         double[] driveSpeeds = new double[robot.driveSystem.length];
         for (int i = 0; i < driveSpeeds.length; i++) {driveSpeeds[i] = driveSpeed * robot.driveSpeeds[i];}
         robot.encoderMoveLinear(driveSpeeds, robot.driverSpeeds(0, distance / wheelCircumference * driveError, 0), robot.driveSystem, this);
+        encoderTurnGyro();
     }
 
     // drive
@@ -113,6 +117,7 @@ public abstract class Auto extends LinearOpMode {
         double[] driveSpeeds = new double[robot.driveSystem.length];
         for (int i = 0; i < driveSpeeds.length; i++) {driveSpeeds[i] = driveSpeed * robot.driveSpeeds[i];}
         robot.encoderMoveLinear(driveSpeeds, robot.driverSpeeds(x / wheelCircumference * driveError, y / wheelCircumference * driveError, 0), robot.driveSystem, this);
+        encoderTurnGyro();
     }
 
     // turn
@@ -120,6 +125,10 @@ public abstract class Auto extends LinearOpMode {
         double[] driveSpeeds = new double[robot.driveSystem.length];
         for (int i = 0; i < driveSpeeds.length; i++) {driveSpeeds[i] = turnSpeed * robot.driveSpeeds[i];}
         robot.encoderMoveLinear(driveSpeeds, robot.driverSpeeds(0, 0, rotations / wheelCircumference * trainCircumference * turnError), robot.driveSystem, this);
+    }
+
+    public void encoderTurnGyro() {
+        encoderTurn(-robot.gyroAngle() / 2 / Math.PI);
     }
 
     // shoot
