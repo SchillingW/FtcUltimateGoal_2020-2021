@@ -38,7 +38,7 @@ public class RobotTypes {
         return new Robot(map, tele,
             new double[]{Robot.tprHdHex20 * frontDriveSpeed, Robot.tprHdHex20, Robot.tprHdHex20 * frontDriveSpeed, Robot.tprHdHex20,
                 Robot.tprHdHex, 0, Robot.tprHdHex, Robot.tprHdHex60, Robot.tprHdHex},
-            new boolean[]{false, false, false, false, false, false, false, false, true},
+            new boolean[]{false, false, false, false, false, false, false, true, true},
             new boolean[]{false, false, true, true, false},
             new double[]{0.3, 0.7, 1, 0.73},
             true,

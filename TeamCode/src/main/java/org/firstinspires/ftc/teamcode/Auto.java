@@ -64,7 +64,8 @@ public abstract class Auto extends LinearOpMode {
         telemetry.update();
 
         // clamp wobble
-        robot.flicker.setPosition(1);
+        robot.servoArm.setPosition(1);
+        robot.arm.setPower(0);
 
         // aim for high goal
         encoderDriveHorizontal(-initialMoveX);
