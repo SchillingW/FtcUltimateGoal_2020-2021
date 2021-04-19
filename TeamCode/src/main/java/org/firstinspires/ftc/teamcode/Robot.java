@@ -96,7 +96,9 @@ public class Robot {
     public double startRadians = 0;
 
     // initialize robot
-    public Robot(HardwareMap map, Telemetry tele, double[] inputTPR, boolean[] breaks, boolean[] hasServos, double[] shooterSpeeds, boolean drivePolarity, boolean collectPolarity, boolean shootPolarity, boolean armPolarity) {
+    public Robot(HardwareMap map, Telemetry tele, double[] inputTPR,
+                 boolean[] breaks, boolean[] hasServos, double[] shooterSpeeds,
+                 boolean drivePolarity, boolean collectPolarity, boolean shootPolarity, boolean armPolarity) {
 
         // set ticks per rotation as well as data for included motors
         ticksPerRotation = inputTPR;
@@ -245,6 +247,7 @@ public class Robot {
         vuforiaLocalizer = ClassFactory.getInstance().createVuforia(parameters);
     }
 
+    // prep tensorflow object detection
     public void initObjectDetector(HardwareMap map) {
         int monitorViewId = map.appContext.getResources().getIdentifier("monitorViewId", "id", map.appContext.getPackageName());
         TFObjectDetector.Parameters parameters = new TFObjectDetector.Parameters(monitorViewId);
@@ -253,15 +256,18 @@ public class Robot {
         objectDetector.loadModelFromAsset(odModelAsset, labelElement1, labelElement2);
     }
 
+    // activate tensorflow object detection
     public void activateTensorFlow() {
         objectDetector.activate();
         objectDetector.setZoom(magnification, aspectRatio);
     }
 
+    // shutdown tensorflow object detection
     public void stopTensorFlow() {
         objectDetector.shutdown();
     }
 
+    // get the label of the current detected ring object
     public String getObjectDetectionLabel() {
         List<Recognition> recognitions = objectDetector.getRecognitions();
         if (recognitions == null) {return "Null";
