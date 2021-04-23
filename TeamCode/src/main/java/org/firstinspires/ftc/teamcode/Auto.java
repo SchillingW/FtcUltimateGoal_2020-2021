@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import java.util.List;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 
@@ -64,6 +63,8 @@ public abstract class Auto extends LinearOpMode {
         telemetry.update();
 
         // clamp wobble
+        raiseElevator();
+        sleep(60 * 1000);
         robot.servoArm.setPosition(1);
         robot.arm.setPower(0);
 
@@ -150,6 +151,12 @@ public abstract class Auto extends LinearOpMode {
         robot.encoderMoveLinear(new double[]{robot.armSpeed}, new double[]{-robot.armRotations}, new int[]{7}, this);
         if (robot.servoArm != null) {robot.servoArm.setPosition(0);}
         robot.encoderMoveLinear(new double[]{robot.armSpeed}, new double[]{robot.armRotations / 2}, new int[]{7}, this);
+    }
+
+    public void raiseElevator() {
+        if (opModeIsActive()) {robot.elev.setPower(robot.elevSpeed);}
+        while (opModeIsActive() && robot.elevLimit.getState()) {}
+        if (opModeIsActive()) {robot.elev.setPower(robot.elevSpeedLimit);}
     }
 
     public int getRingCount() {

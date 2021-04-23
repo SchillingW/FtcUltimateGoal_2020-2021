@@ -11,6 +11,7 @@ public class RobotTypes {
                 Robot.tprCoreHex, Robot.tprCoreHex, Robot.tprHdHex, Robot.tprNeveRest, 0},
             new boolean[]{false, false, false, false, false, false, false, false, false},
             new boolean[]{false, false, false, false, false},
+            new double[]{1, 1, 1, 1},
             new double[]{0.2, 0.5, 0.55, 0.51},
             true,
             false,
@@ -24,6 +25,7 @@ public class RobotTypes {
                 Robot.tprCoreHex, 0, Robot.tprHdHex, Robot.tprCoreHex, 0},
             new boolean[]{false, false, false, false, false, false, false, false, false},
             new boolean[]{true, true, true, true, false},
+            new double[]{1, 1, 1, 1},
             new double[]{0.2, 0.5, 1, 0.51},
             true,
             false,
@@ -33,14 +35,15 @@ public class RobotTypes {
 
     public static Robot newRob3(HardwareMap map, Telemetry tele) {
         double frontDriveGear = 30.0 / 36.0;
-        double frontDriveLerp = 0.3;
-        double frontDriveSpeed = lerp(frontDriveGear, 1, frontDriveLerp);
+        double frontDriveTicks = lerp(1, frontDriveGear, 0.3);
+        double frontDriveSpeed = lerp(1, frontDriveGear, 0.5);
         return new Robot(map, tele,
-            new double[]{Robot.tprHdHex20 * frontDriveSpeed, Robot.tprHdHex20, Robot.tprHdHex20 * frontDriveSpeed, Robot.tprHdHex20,
-                Robot.tprHdHex, 0, Robot.tprHdHex, Robot.tprHdHex60, Robot.tprHdHex},
+            new double[]{Robot.tprHdHex20 * frontDriveTicks, Robot.tprHdHex20, Robot.tprHdHex20 * frontDriveTicks, Robot.tprHdHex20,
+                Robot.tprHdHex, 0, Robot.tprHdHex, Robot.tprHdHex60, Robot.tprHdHex20},
             new boolean[]{false, false, false, false, false, false, false, true, true},
             new boolean[]{false, false, true, true, false},
-            new double[]{0.3, 0.7, 1, 0.73},
+            new double[]{frontDriveSpeed, 1, frontDriveSpeed, 1},
+            new double[]{0.3, 0.65, 0.85, 0.7},
             true,
             true,
             true,

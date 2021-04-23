@@ -20,6 +20,7 @@ public class AutoRob3 extends Auto {
         //encoderShoot(2);
         //encoderShoot(2);
         //encoderShoot(2);
+        raiseElevator();
         robot.flicker.setPosition(1);
         robot.shooter.setPower(robot.ringSpeeds[3][1]);
         sleep((long)(shooterRevTime * 1000));
@@ -29,6 +30,8 @@ public class AutoRob3 extends Auto {
             robot.flicker.setPosition(1);
             sleep((long)(flickerMoveTimeRetreat * 1000));
         }
+        robot.flicker.setPosition(0);
         robot.shooter.setPower(0);
+        raiseElevator();
     }
 }

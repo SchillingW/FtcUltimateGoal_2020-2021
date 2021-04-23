@@ -9,6 +9,7 @@ import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -38,6 +39,7 @@ public class Robot {
     public Servo servoArm;
     public Servo collectPressure;
     public BNO055IMU gyro;
+    public DigitalChannel elevLimit;
 
     // declare names
     public String[] driverNames = new String[]{"rf", "rb", "lf", "lb"};
@@ -52,10 +54,12 @@ public class Robot {
     public String servoArmName = "servoArm";
     public String collectPressureName = "collectPress";
     public String gyroName = "gyro";
+    public String elevLimitName = "elevLimit";
     public String fileName = "robotStateSave.txt";
 
     // declare motor encoder state
     public boolean[] motorsOn = new boolean[allMotors.length];
+    public int[] motorStartPos = new int[allMotors.length];
 
     // declare ticks per rotation
     public static double tprHdHex = 28;
@@ -76,8 +80,8 @@ public class Robot {
     public double shooterRotations = 600;
     public double armSpeed = 0.3;
     public double armRotations = 0.25;
-    public double elevSpeedUp = 0.2;
-    public double elevSpeedDown = 0.1;
+    public double elevSpeed = 0.2;
+    public double elevSpeedLimit = 0.00001;
     public double[][] ringSpeeds;
     public double[][] ringRotations;
 
@@ -97,20 +101,18 @@ public class Robot {
 
     // initialize robot
     public Robot(HardwareMap map, Telemetry tele, double[] inputTPR,
-                 boolean[] breaks, boolean[] hasServos, double[] shooterSpeeds,
+                 boolean[] breaks, boolean[] hasServos, double[] inputDriveSpeeds, double[] shooterSpeeds,
                  boolean drivePolarity, boolean collectPolarity, boolean shootPolarity, boolean armPolarity) {
 
         // set ticks per rotation as well as data for included motors
         ticksPerRotation = inputTPR;
+        driveSpeeds = inputDriveSpeeds;
         sideDrivePolarity = drivePolarity;
         collectorPolarity = collectPolarity;
 
         // initialize drive motors
         tele.addData("Init", "Drivers");
         tele.update();
-        double maxDriveTPR = 0;
-        for (int i = 0; i < drivers.length; i++) {maxDriveTPR = Math.max(maxDriveTPR, inputTPR[i]);}
-        for (int i = 0; i < drivers.length; i++) {driveSpeeds[i] = inputTPR[i] / maxDriveTPR;}
         for (int i = 0; i < drivers.length; i++) {drivers[i] = inputTPR[i] != 0 ? map.get(DcMotor.class, driverNames[i]) : null;}
         for (int i = 0; i < drivers.length; i++) {allMotors[i] = drivers[i];}
         for (int i = 0; i < drivers.length; i++) {driveSystem[i] = i;}
@@ -137,6 +139,7 @@ public class Robot {
             ringRotations[i][j] = (j == 0 ? hookRotations : -shooterRotations) * ringSpeeds[i][j];
         }} armSpeed *= armPolarity ? 1 : -1;
         armRotations *= armPolarity ? 1 : -1;
+        for (int i = 0; i < allMotors.length; i++) {if (allMotors[i] != null) {motorStartPos[i] = allMotors[i].getCurrentPosition();}}
 
         // initialize encoders
         tele.addData("Init", "Encoders");
@@ -165,6 +168,9 @@ public class Robot {
         gyro = map.get(BNO055IMU.class, gyroName);
         gyro.initialize(params);
         while (!gyro.isGyroCalibrated()) {}
+
+        // initialize limit switch
+        elevLimit = map.get(DigitalChannel.class, elevLimitName);
 
         // finish tele
         tele.addData("Init", "Finished");
@@ -206,15 +212,15 @@ public class Robot {
 
     // move motors with encoders
     public void encoderMoveLinear(double[] speed, double[] rotations, int[] index, LinearOpMode op) {
-        encoderMoveStart(speed, rotations, index, op);
+        encoderMoveStart(speed, rotations, index, true, op);
         while (encoderMoveLoop(op)) {};
     }
 
     // begin move motors with encoders
-    public void encoderMoveStart(double[] speed, double[] rotations, int[] index, LinearOpMode op) {
+    public void encoderMoveStart(double[] speed, double[] rotations, int[] index, boolean useCurrentPosition, LinearOpMode op) {
         if (op == null || op.opModeIsActive()) {
             int[] targets = new int[allMotors.length];
-            for (int i = 0; i < index.length; i++) {if (allMotors[index[i]] != null) {targets[index[i]] = allMotors[index[i]].getCurrentPosition() + (int)(rotations[i] * ticksPerRotation[index[i]]);}}
+            for (int i = 0; i < index.length; i++) {if (allMotors[index[i]] != null) {targets[index[i]] = (useCurrentPosition ? allMotors[index[i]].getCurrentPosition() : motorStartPos[index[i]]) + (int)(rotations[i] * ticksPerRotation[index[i]]);}}
             for (int i = 0; i < index.length; i++) {if (allMotors[index[i]] != null) {allMotors[index[i]].setTargetPosition(targets[index[i]]);}}
             for (int i = 0; i < index.length; i++) {if (allMotors[index[i]] != null) {allMotors[index[i]].setMode(DcMotor.RunMode.RUN_TO_POSITION);}}
             for (int i = 0; i < index.length; i++) {if (allMotors[index[i]] != null) {allMotors[index[i]].setPower(Math.abs(speed[i]));}}
@@ -226,12 +232,15 @@ public class Robot {
     public boolean encoderMoveLoop(LinearOpMode op) {
         boolean areBusy = false;
         for (int i = 0; i < allMotors.length; i++) {if (motorsOn[i] && allMotors[i] != null) {
-                if (allMotors[i].isBusy() && (op == null || op.opModeIsActive())) {areBusy = true;
-                } else {
-                    allMotors[i].setPower(0);
-                    allMotors[i].setMode(DcMotor.RunMode.RUN_USING_ENCODERS);
-                    motorsOn[i] = false;
-        }}} return areBusy;
+            if (allMotors[i].isBusy() && (op == null || op.opModeIsActive())) {areBusy = true;
+            } else {stopEncoderMotor(i);}
+        }} return areBusy;
+    }
+
+    public void stopEncoderMotor(int index) {
+        allMotors[index].setPower(0);
+        allMotors[index].setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motorsOn[index] = false;
     }
 
     // get angle of gyro sensor about the upwards axis in radians

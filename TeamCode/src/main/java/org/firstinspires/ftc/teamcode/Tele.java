@@ -45,8 +45,12 @@ public abstract class Tele extends OpMode {
     // initialize robot
     @Override
     public void init() {
+
+        // init robot
         robot = getRobot();
         robot.startRadians = startRadians;
+
+        // initialize tensorflow if object detection is on
         if (objectDetectionOn) {
             telemetry.addData("ObjectDetection", "InitVuforia");
             telemetry.update();
@@ -101,7 +105,7 @@ public abstract class Tele extends OpMode {
         if (robot.flicker != null) {robot.flicker.setPosition(aButton2 || bButton2 || yButton2 || xButton2 ? 0 : 1);}
         */
 
-        if (robot.elev != null) {robot.elev.setPower(aButton2 || bButton2 || yButton2 || xButton2 ? robot.elevSpeedUp : -robot.elevSpeedDown);}
+        if (robot.elev != null) {robot.elev.setPower(aButton2 || bButton2 || yButton2 || xButton2 ? (robot.elevLimit.getState() ? robot.elevSpeed : robot.elevSpeedLimit) : (dPadDown2 ? -robot.elevSpeed : 0));}
         if (robot.shooter != null) {robot.shooter.setPower(aButton2 || bButton2 || yButton2 || xButton2 ? robot.ringSpeeds[xButton2 ? 3 : (yButton2 ? 2 : (bButton2 ? 1 : 0))][1] : 0);}
         if (robot.flicker != null) {robot.flicker.setPosition(rTrigger2 ? 0 : 1);}
 
