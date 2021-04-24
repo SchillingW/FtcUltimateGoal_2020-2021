@@ -12,7 +12,6 @@ public abstract class Tele extends OpMode {
     // variable data
     public float startRadians = -90;
     public float slowSpeed = 0.2f;
-    public boolean elevIsHigh = false;
 
     // last frame data
     public boolean lastAButton1 = true;
@@ -39,6 +38,7 @@ public abstract class Tele extends OpMode {
     public boolean driveOn = true;
     public boolean collectorOn = false;
     public boolean elevUp = false;
+    public boolean flickerIn = true;
     public boolean objectDetectionOn = false;
 
     public abstract Robot getRobot();
@@ -106,13 +106,14 @@ public abstract class Tele extends OpMode {
         if (robot.flicker != null) {robot.flicker.setPosition(aButton2 || bButton2 || yButton2 || xButton2 ? 0 : 1);}
         */
 
+        boolean limitSwitchUp = !robot.elevLimitUp.getState();
+        boolean limitSwitchDown = !robot.elevLimitDown.getState();
         if (robot.elev != null) {
-            elevIsHigh = (elevIsHigh || !robot.elevLimit.getState()) && aButton2 || bButton2 || yButton2 || xButton2;
-            robot.elev.setPower(aButton2 || bButton2 || yButton2 || xButton2 ? (elevIsHigh ? robot.elevSpeed : robot.elevSpeedLimit) : (dPadDown2 ? -robot.elevSpeed : 0));
+            elevUp = (elevUp || limitSwitchUp) && (aButton2 || bButton2 || yButton2 || xButton2);
+            robot.elev.setPower(-(aButton2 || bButton2 || yButton2 || xButton2 ? (elevUp ? robot.elevSpeedLimit : robot.elevSpeed) : (limitSwitchDown ? 0 : -robot.elevSpeed)));
         }
         if (robot.shooter != null) {robot.shooter.setPower(aButton2 || bButton2 || yButton2 || xButton2 ? robot.ringSpeeds[xButton2 ? 3 : (yButton2 ? 2 : (bButton2 ? 1 : 0))][1] : 0);}
-        if (robot.flicker != null) {robot.flicker.setPosition(rTrigger2 ? 0 : 1);}
-
+        if (robot.flicker != null) {robot.flicker.setPosition(!limitSwitchUp || rTrigger2 ? 0 : 1);}
         if (rBumper2 && !lastRBumper2) {collectorOn = !collectorOn;}
         if (robot.collectPressure != null) {
             if (lTrigger2) {robot.collectPressure.setPosition(1);
@@ -165,6 +166,9 @@ public abstract class Tele extends OpMode {
         telemetry.addData("DriveOn", driveOn);
         telemetry.addData("CollectorOn", collectorOn);
         telemetry.addData("ElevUp", elevUp);
+        telemetry.addData("FlickerIn", flickerIn);
+        telemetry.addData("ElevLimitUp", limitSwitchUp);
+        telemetry.addData("ElevLimitDown", limitSwitchDown);
         telemetry.addData("StartRadians", formatDouble(robot.startRadians));
         telemetry.addData("PadX", formatDouble(padX));
         telemetry.addData("PadY", formatDouble(padY));

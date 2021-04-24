@@ -39,7 +39,8 @@ public class Robot {
     public Servo servoArm;
     public Servo collectPressure;
     public BNO055IMU gyro;
-    public DigitalChannel elevLimit;
+    public DigitalChannel elevLimitUp;
+    public DigitalChannel elevLimitDown;
 
     // declare names
     public String[] driverNames = new String[]{"rf", "rb", "lf", "lb"};
@@ -54,7 +55,8 @@ public class Robot {
     public String servoArmName = "servoArm";
     public String collectPressureName = "collectPress";
     public String gyroName = "gyro";
-    public String elevLimitName = "elevLimit";
+    public String elevLimitUpName = "elevLimitUp";
+    public String elevLimitDownName = "elevLimitDown";
     public String fileName = "robotStateSave.txt";
 
     // declare motor encoder state
@@ -81,7 +83,7 @@ public class Robot {
     public double armSpeed = 0.3;
     public double armRotations = 0.25;
     public double elevSpeed = 0.2;
-    public double elevSpeedLimit = 0.00001;
+    public double elevSpeedLimit = 0.001;
     public double[][] ringSpeeds;
     public double[][] ringRotations;
 
@@ -170,7 +172,8 @@ public class Robot {
         while (!gyro.isGyroCalibrated()) {}
 
         // initialize limit switch
-        elevLimit = map.get(DigitalChannel.class, elevLimitName);
+        elevLimitUp = map.get(DigitalChannel.class, elevLimitUpName);
+        elevLimitDown = map.get(DigitalChannel.class, elevLimitDownName);
 
         // finish tele
         tele.addData("Init", "Finished");

@@ -155,7 +155,7 @@ public abstract class Auto extends LinearOpMode {
 
     public void raiseElevator() {
         if (opModeIsActive()) {robot.elev.setPower(robot.elevSpeed);}
-        while (opModeIsActive() && robot.elevLimit.getState()) {}
+        while (opModeIsActive() && robot.elevLimitUp.getState()) {}
         if (opModeIsActive()) {robot.elev.setPower(robot.elevSpeedLimit);}
     }
 
