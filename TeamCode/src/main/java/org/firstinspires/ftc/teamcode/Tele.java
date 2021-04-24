@@ -12,6 +12,7 @@ public abstract class Tele extends OpMode {
     // variable data
     public float startRadians = -90;
     public float slowSpeed = 0.2f;
+    public boolean elevIsHigh = false;
 
     // last frame data
     public boolean lastAButton1 = true;
@@ -105,7 +106,10 @@ public abstract class Tele extends OpMode {
         if (robot.flicker != null) {robot.flicker.setPosition(aButton2 || bButton2 || yButton2 || xButton2 ? 0 : 1);}
         */
 
-        if (robot.elev != null) {robot.elev.setPower(aButton2 || bButton2 || yButton2 || xButton2 ? (robot.elevLimit.getState() ? robot.elevSpeed : robot.elevSpeedLimit) : (dPadDown2 ? -robot.elevSpeed : 0));}
+        if (robot.elev != null) {
+            elevIsHigh = (elevIsHigh || !robot.elevLimit.getState()) && aButton2 || bButton2 || yButton2 || xButton2;
+            robot.elev.setPower(aButton2 || bButton2 || yButton2 || xButton2 ? (elevIsHigh ? robot.elevSpeed : robot.elevSpeedLimit) : (dPadDown2 ? -robot.elevSpeed : 0));
+        }
         if (robot.shooter != null) {robot.shooter.setPower(aButton2 || bButton2 || yButton2 || xButton2 ? robot.ringSpeeds[xButton2 ? 3 : (yButton2 ? 2 : (bButton2 ? 1 : 0))][1] : 0);}
         if (robot.flicker != null) {robot.flicker.setPosition(rTrigger2 ? 0 : 1);}
 
