@@ -32,6 +32,7 @@ public abstract class Auto extends LinearOpMode {
 
     // declare field movements
     public double initialMoveX = 3 * inchPerFoot;
+    public double awayFromWallY = 0.5 * inchPerFoot;
     public double startToShootX = inchPerFoot;
     public double startToShootY = 5.2 * inchPerFoot;
     public double[] startToWobbleX = {4.5 * inchPerFoot, 2 * inchPerFoot, 4 * inchPerFoot};
@@ -62,15 +63,17 @@ public abstract class Auto extends LinearOpMode {
         telemetry.addData("Start", "Auto");
         telemetry.update();
 
-        // clamp wobble
+        // raise elevator
+        encoderDriveVertical(awayFromWallY);
         raiseElevator();
-        sleep(60 * 1000);
+
+        // clamp wobble
         robot.servoArm.setPosition(1);
         robot.arm.setPower(0);
 
         // aim for high goal
         encoderDriveHorizontal(-initialMoveX);
-        encoderDriveVertical(startToShootY);
+        encoderDriveVertical(startToShootY - awayFromWallY);
         encoderDriveHorizontal(startToShootX);
 
         // shoot 3 rings
@@ -130,7 +133,7 @@ public abstract class Auto extends LinearOpMode {
     }
 
     public void encoderTurnGyro() {
-        encoderTurn(-robot.gyroAngle() / 2 / Math.PI);
+        encoderTurn(robot.gyroAngle() / 2 / Math.PI);
     }
 
     // shoot

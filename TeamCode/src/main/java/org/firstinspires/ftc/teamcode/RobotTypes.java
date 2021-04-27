@@ -36,7 +36,7 @@ public class RobotTypes {
     public static Robot newRob3(HardwareMap map, Telemetry tele) {
         double frontDriveGear = 30.0 / 36.0;
         double frontDriveTicks = lerp(1, frontDriveGear, 0.3);
-        double frontDriveSpeed = lerp(1, frontDriveGear, 0.5);
+        double frontDriveSpeed = lerp(1, frontDriveGear, 0.2);
         return new Robot(map, tele,
             new double[]{Robot.tprHdHex20 * frontDriveTicks, Robot.tprHdHex20, Robot.tprHdHex20 * frontDriveTicks, Robot.tprHdHex20,
                 Robot.tprHdHex, 0, Robot.tprHdHex, Robot.tprHdHex60, Robot.tprHdHex20},
