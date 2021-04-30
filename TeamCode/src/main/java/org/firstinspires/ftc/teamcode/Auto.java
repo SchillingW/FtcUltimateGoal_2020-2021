@@ -32,13 +32,13 @@ public abstract class Auto extends LinearOpMode {
 
     // declare field movements
     public double initialMoveX = 3 * inchPerFoot;
-    public double awayFromWallY = 0.5 * inchPerFoot;
+    public double awayFromWallY = 1 * inchPerFoot;
     public double startToShootX = 2 * inchPerFoot;
-    public double startToShootY = 5 * inchPerFoot;
-    public double[] startToWobbleX = {4.5 * inchPerFoot, 2 * inchPerFoot, 4 * inchPerFoot};
-    public double[] startToWobbleY = {9 * inchPerFoot, 6.5 * inchPerFoot, 4.5 * inchPerFoot};
+    public double startToShootY = 4.5 * inchPerFoot;
+    public double[] startToWobbleX = {4.5 * inchPerFoot, 2 * inchPerFoot, 4.5 * inchPerFoot};
+    public double[] startToWobbleY = {8.5 * inchPerFoot, 6 * inchPerFoot, 4 * inchPerFoot};
     public double startToParkX = 2 * inchPerFoot;
-    public double startToParkY = 6 * inchPerFoot;
+    public double startToParkY = 5.5 * inchPerFoot;
 
     public abstract Robot getRobot();
 
@@ -50,6 +50,11 @@ public abstract class Auto extends LinearOpMode {
         robot = getRobot();
         robot.initVuforia();
         robot.initObjectDetector(hardwareMap);
+
+        // clamp wobble
+        robot.servoArm.setPosition(0);
+        robot.servoArm.setPosition(1);
+        robot.arm.setPower(0);
 
         // read ring count while waiting for driver to press start
         robot.activateTensorFlow();
@@ -67,13 +72,10 @@ public abstract class Auto extends LinearOpMode {
         encoderDriveVertical(awayFromWallY);
         raiseElevator();
 
-        // clamp wobble
-        robot.servoArm.setPosition(1);
-        robot.arm.setPower(0);
-
         // aim for high goal
         encoderDriveHorizontal(-initialMoveX);
-        encoderDrive(startToShootX, startToShootY - awayFromWallY);
+        encoderDriveVertical(startToShootY - awayFromWallY);
+        encoderDriveHorizontal(startToShootX);
 
         // shoot 3 rings
         shootAllRings();
@@ -83,7 +85,8 @@ public abstract class Auto extends LinearOpMode {
         //if (robot.collector != null) {robot.collector.setPower(0);}
 
         // drop wobble goal
-        encoderDrive(startToWobbleX[ringCount] - startToShootX, startToWobbleY[ringCount] - startToShootY);
+        encoderDriveVertical(startToWobbleY[ringCount] - startToShootY);
+        encoderDriveHorizontal(startToWobbleX[ringCount] - startToShootX);
         encoderLowerArm();
 
         // park

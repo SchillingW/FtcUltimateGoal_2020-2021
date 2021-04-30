@@ -110,7 +110,7 @@ public abstract class Tele extends OpMode {
         boolean limitSwitchDown = !robot.elevLimitDown.getState();
         if (robot.elev != null) {
             elevUp = (elevUp || limitSwitchUp) && (aButton2 || bButton2 || yButton2 || xButton2);
-            robot.elev.setPower(-(aButton2 || bButton2 || yButton2 || xButton2 ? (elevUp ? robot.elevSpeedLimit : robot.elevSpeed) : (limitSwitchDown ? 0 : -robot.elevSpeed)));
+            robot.elev.setPower(aButton2 || bButton2 || yButton2 || xButton2 ? (elevUp ? robot.elevSpeedLimit : robot.elevSpeed) : (limitSwitchDown ? 0 : -robot.elevSpeed));
         }
         if (robot.shooter != null) {robot.shooter.setPower(aButton2 || bButton2 || yButton2 || xButton2 ? robot.ringSpeeds[xButton2 ? 3 : (yButton2 ? 2 : (bButton2 ? 1 : 0))][1] : 0);}
         if (robot.flicker != null) {robot.flicker.setPosition(!limitSwitchUp || rTrigger2 ? 0 : 1);}

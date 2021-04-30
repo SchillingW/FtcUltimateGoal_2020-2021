@@ -7,8 +7,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 public class AutoRob3 extends Auto {
 
     public double shooterRevTime = 2;
-    public double flickerMoveTimeShoot = 1;
-    public double flickerMoveTimeRetreat = 2;
+    public double flickerMoveTimeShoot = 0.5;
+    public double flickerMoveTimeRetreat = 1;
 
     @Override
     public Robot getRobot() {
