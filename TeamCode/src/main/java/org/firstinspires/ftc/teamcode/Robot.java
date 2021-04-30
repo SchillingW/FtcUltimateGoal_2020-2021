@@ -82,7 +82,7 @@ public class Robot {
     public double shooterRotations = 600;
     public double armSpeed = 0.3;
     public double armRotations = 0.25;
-    public double elevSpeed = 0.2;
+    public double elevSpeed = 0.1;
     public double elevSpeedLimit = 0.001;
     public double[][] ringSpeeds;
     public double[][] ringRotations;
