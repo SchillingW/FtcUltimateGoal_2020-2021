@@ -20,7 +20,7 @@ public abstract class Auto extends LinearOpMode {
     public double trainCircumference = trainDiameter * Math.PI;
 
     // declare speeds
-    public double driveSpeed = 0.5;
+    public double driveSpeed = 1;
     public double turnSpeed = 1;
 
     // declare motor errors
@@ -33,8 +33,8 @@ public abstract class Auto extends LinearOpMode {
     // declare field movements
     public double initialMoveX = 3 * inchPerFoot;
     public double awayFromWallY = 0.5 * inchPerFoot;
-    public double startToShootX = inchPerFoot;
-    public double startToShootY = 5.2 * inchPerFoot;
+    public double startToShootX = 2 * inchPerFoot;
+    public double startToShootY = 5 * inchPerFoot;
     public double[] startToWobbleX = {4.5 * inchPerFoot, 2 * inchPerFoot, 4 * inchPerFoot};
     public double[] startToWobbleY = {9 * inchPerFoot, 6.5 * inchPerFoot, 4.5 * inchPerFoot};
     public double startToParkX = 2 * inchPerFoot;
@@ -73,8 +73,7 @@ public abstract class Auto extends LinearOpMode {
 
         // aim for high goal
         encoderDriveHorizontal(-initialMoveX);
-        encoderDriveVertical(startToShootY - awayFromWallY);
-        encoderDriveHorizontal(startToShootX);
+        encoderDrive(startToShootX, startToShootY - awayFromWallY);
 
         // shoot 3 rings
         shootAllRings();
@@ -84,8 +83,7 @@ public abstract class Auto extends LinearOpMode {
         //if (robot.collector != null) {robot.collector.setPower(0);}
 
         // drop wobble goal
-        encoderDriveVertical(startToWobbleY[ringCount] - startToShootY);
-        encoderDriveHorizontal(startToWobbleX[ringCount] - startToShootX);
+        encoderDrive(startToWobbleX[ringCount] - startToShootX, startToWobbleY[ringCount] - startToShootY);
         encoderLowerArm();
 
         // park
