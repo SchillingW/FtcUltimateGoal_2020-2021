@@ -34,7 +34,7 @@ public abstract class Auto extends LinearOpMode {
     public double initialMoveX = 3 * inchPerFoot;
     public double awayFromWallY = 1 * inchPerFoot;
     public double startToShootX = 2 * inchPerFoot;
-    public double startToShootY = 4.5 * inchPerFoot;
+    public double startToShootY = 4 * inchPerFoot;
     public double[] startToWobbleX = {4.5 * inchPerFoot, 2 * inchPerFoot, 4.5 * inchPerFoot};
     public double[] startToWobbleY = {8.5 * inchPerFoot, 6 * inchPerFoot, 4 * inchPerFoot};
     public double startToParkX = 2 * inchPerFoot;

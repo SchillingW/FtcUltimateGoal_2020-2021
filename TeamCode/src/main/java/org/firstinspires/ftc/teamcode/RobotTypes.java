@@ -43,7 +43,7 @@ public class RobotTypes {
             new boolean[]{false, false, false, false, false, false, false, true, true},
             new boolean[]{false, false, true, true, false},
             new double[]{frontDriveSpeed, 1, frontDriveSpeed, 1},
-            new double[]{0.3, 0.65, 0.85, 0.7},
+            new double[]{0.3, 0.65, 1, 0.7},
             true,
             true,
             true,

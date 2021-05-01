@@ -76,6 +76,7 @@ public class Robot {
     public double[] driveSpeeds = new double[drivers.length];
     public boolean sideDrivePolarity;
     public int[] ringSystem = new int[2];
+    public double collectorSpeed = 1;
     public boolean collectorPolarity;
     public double hookRotations = 9;
     public double hookSpeed = 0.4;
