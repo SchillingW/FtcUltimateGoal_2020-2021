@@ -22,7 +22,7 @@ public class AutoRob3 extends Auto {
         //encoderShoot(2);
         raiseElevator();
         robot.flicker.setPosition(1);
-        robot.shooter.setPower(robot.ringSpeeds[3][1]);
+        robot.shooter.setPower(robot.ringSpeeds[2][1]);
         sleep((long)(shooterRevTime * 1000));
         for (int i = 0; i < 3; i++) {
             robot.flicker.setPosition(0);

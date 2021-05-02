@@ -33,8 +33,8 @@ public abstract class Auto extends LinearOpMode {
     // declare field movements
     public double initialMoveX = 3 * inchPerFoot;
     public double awayFromWallY = 1 * inchPerFoot;
-    public double startToShootX = 2 * inchPerFoot;
-    public double startToShootY = 4 * inchPerFoot;
+    public double startToShootX = 1.5 * inchPerFoot;
+    public double startToShootY = 4.5 * inchPerFoot;
     public double[] startToWobbleX = {4.5 * inchPerFoot, 2 * inchPerFoot, 4.5 * inchPerFoot};
     public double[] startToWobbleY = {8.5 * inchPerFoot, 6 * inchPerFoot, 4 * inchPerFoot};
     public double startToParkX = 2 * inchPerFoot;
@@ -68,16 +68,14 @@ public abstract class Auto extends LinearOpMode {
         telemetry.addData("Start", "Auto");
         telemetry.update();
 
-        // raise elevator
-        encoderDriveVertical(awayFromWallY);
-        raiseElevator();
-
         // aim for high goal
+        encoderDriveVertical(awayFromWallY);
         encoderDriveHorizontal(-initialMoveX);
         encoderDriveVertical(startToShootY - awayFromWallY);
         encoderDriveHorizontal(startToShootX);
 
         // shoot 3 rings
+        raiseElevator();
         shootAllRings();
         //encoderShoot(2);
         //if (robot.collector != null) {robot.collector.setPower(-1);}

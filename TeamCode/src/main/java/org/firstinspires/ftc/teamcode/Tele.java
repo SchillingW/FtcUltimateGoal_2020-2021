@@ -184,7 +184,7 @@ public abstract class Tele extends OpMode {
 
         // send output
         robot.encoderMoveLoop(null);
-        if (robot.collector != null) {robot.collector.setPower(collectorOn && limitSwitchDown ? robot.collectorSpeed * (robot.collectorPolarity ? 1 : -1) : 0);}
+        if (robot.collector != null) {robot.collector.setPower((lBumper2 ? -1 : 1) * (collectorOn && limitSwitchDown ? robot.collectorSpeed * (robot.collectorPolarity ? 1 : -1) : 0));}
         if (robot.servoHook != null) {robot.servoHook.setPower(collectorOn ? 0 : 0.5);}
         if (robot.arm != null) {robot.arm.setPower(gamepad2.left_stick_y * robot.armSpeed);}
         if (robot.servoArm != null && gamepad2.right_stick_y != 0) {robot.servoArm.setPosition(gamepad2.right_stick_y > 0 ? 1 : 0);}
